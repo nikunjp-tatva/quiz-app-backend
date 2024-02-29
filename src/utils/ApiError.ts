@@ -6,8 +6,9 @@ interface IApiError {
 }
 class ApiError extends Error implements IApiError {
 	statusCode: number;
+
 	isOperational: boolean;
-	
+
 	constructor(statusCode: number, message: string, isOperational = true, stack = '') {
 		super(message);
 		this.statusCode = statusCode;

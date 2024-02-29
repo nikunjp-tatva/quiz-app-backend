@@ -53,7 +53,12 @@ export const saveToken = async (token, userId, expires, type, blacklisted = fals
  */
 export const verifyToken = async (token, type) => {
 	const payload = jwt.verify(token, config.jwt.secret);
-	const tokenDoc = await Token.findOne({ token, type, user: payload.sub, blacklisted: false });
+	const tokenDoc = await Token.findOne({
+		token,
+		type,
+		user: payload.sub,
+		blacklisted: false,
+	});
 	if (!tokenDoc) {
 		throw new Error('Token not found');
 	}
@@ -74,10 +79,10 @@ export const generateAuthTokens = async (user) => {
 	if (!refreshTokenDoc) {
 		const refreshToken = generateToken(user.id, refreshTokenExpires, tokenTypes.REFRESH);
 		await saveToken(refreshToken, user.id, refreshTokenExpires, tokenTypes.REFRESH);
-	
+
 		refreshTokenDoc = {};
 		refreshTokenDoc.token = refreshToken;
-	  }
+	}
 
 	return {
 		access: {

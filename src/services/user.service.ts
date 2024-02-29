@@ -33,18 +33,14 @@ export const queryUsers = async (filter, options) => {
  * @param {ObjectId} id
  * @returns {Promise<User>}
  */
-export const getUserById = async (id) => {
-	return User.findById(id);
-};
+export const getUserById = async (id) => User.findById(id);
 
 /**
  * Get user by email
  * @param {string} email
  * @returns {Promise<User>}
  */
-export const getUserByEmail = async (email) => {
-	return User.findOne({ email });
-};
+export const getUserByEmail = async (email) => User.findOne({ email });
 
 /**
  * Update user by id

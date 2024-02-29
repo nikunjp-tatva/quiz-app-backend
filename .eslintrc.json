@@ -26,6 +26,11 @@
     "no-multi-spaces": "error",
     "space-in-parens": "error",
     "no-multiple-empty-lines": "error",
-    "prefer-const": "error"
+    "prefer-const": "error",
+    "eslint-plugin-import/extensions": "off",
+    "eslint-plugin-import/no-unresolved": "off",
+    "no-tabs": "off",
+    "indent": "off",
+    "eslint-plugin-import/first": "off"
   }
 }

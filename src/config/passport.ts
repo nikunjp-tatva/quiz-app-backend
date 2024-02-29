@@ -8,7 +8,10 @@ const jwtOptions = {
 	jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
 };
 
-const jwtVerify = async (payload: { type: string; sub: any; }, done: (arg0: null, arg1: any) => void) => {
+const jwtVerify = async (
+	payload: { type: string; sub: any },
+	done: (arg0: null, arg1: any) => void,
+) => {
 	try {
 		if (payload.type !== tokenTypes.ACCESS) {
 			throw new Error('Invalid token type');

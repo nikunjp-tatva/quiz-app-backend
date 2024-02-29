@@ -23,7 +23,12 @@ if (config.env !== 'test') {
  * @returns {Promise}
  */
 export const sendEmail = async (to, subject, text) => {
-	const msg = { from: config.email.from, to, subject, text };
+	const msg = {
+		from: config.email.from,
+		to,
+		subject,
+		text,
+	};
 	await transport.sendMail(msg);
 };
 

@@ -43,8 +43,8 @@ const verifyCallback =
 
 const auth =
 	(...requiredRights: any[]): any =>
-	async (req: RequestWithUser, res: Response, next: NextFunction) => {
-		return new Promise((resolve, reject) => {
+	async (req: RequestWithUser, res: Response, next: NextFunction) =>
+		new Promise((resolve, reject) => {
 			passport.authenticate(
 				'jwt',
 				{ session: false },
@@ -53,6 +53,5 @@ const auth =
 		})
 			.then(() => next())
 			.catch((err) => next(err));
-	};
 
 export default auth;

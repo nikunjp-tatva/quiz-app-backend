@@ -43,7 +43,10 @@ export const logout = async (refreshToken) => {
  */
 export const refreshAuth = async (refreshToken) => {
 	try {
-		const refreshTokenDoc: any = await tokenService.verifyToken(refreshToken, tokenTypes.REFRESH);
+		const refreshTokenDoc: any = await tokenService.verifyToken(
+			refreshToken,
+			tokenTypes.REFRESH,
+		);
 		const user = await userService.getUserById(refreshTokenDoc.user);
 		if (!user) {
 			throw new Error();
