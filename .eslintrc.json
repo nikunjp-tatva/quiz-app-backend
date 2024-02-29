@@ -7,7 +7,8 @@
   "parser": "@typescript-eslint/parser",
   "extends": [
     "airbnb-base",
-    "plugin:@typescript-eslint/recommended"
+    "plugin:@typescript-eslint/recommended",
+    "prettier"
   ],
   "plugins": ["jest", "security", "prettier"],
   "parserOptions": {
