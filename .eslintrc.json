@@ -10,7 +10,7 @@
     "plugin:@typescript-eslint/recommended",
     "prettier"
   ],
-  "plugins": ["jest", "security", "prettier"],
+  "plugins": ["jest", "security", "prettier", "@typescript-eslint"],
   "parserOptions": {
     "ecmaVersion": 2022,
     "sourceType": "module"
@@ -32,6 +32,15 @@
     "eslint-plugin-import/no-unresolved": "off",
     "no-tabs": "off",
     "indent": "off",
-    "eslint-plugin-import/first": "off"
+    "eslint-plugin-import/first": "off",
+    "import/first": "off",
+    "import/extensions": [
+        "error",
+        "ignorePackages",
+        {
+          "ts": "never",
+          "": "never"
+        }
+      ]
   }
 }
