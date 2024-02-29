@@ -32,6 +32,7 @@ export const errorHandler = (
 	err: { isOperational?: boolean; message: string; stack?: any; statusCode?: number },
 	_req: Request,
 	res: Response,
+	_next: NextFunction,
 ) => {
 	let { statusCode, message } = err;
 	if (config.env === 'production' && !err.isOperational) {
@@ -42,7 +43,7 @@ export const errorHandler = (
 	res.locals.errorMessage = err.message;
 
 	const response = {
-    status: 'error',
+		status: 'error',
 		code: statusCode,
 		message,
 		...(config.env === 'development' && { stack: err.stack }),
