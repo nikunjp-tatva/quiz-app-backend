@@ -1,0 +1,38 @@
+# Dependencies
+node_modules
+
+# yarn error logs
+yarn-error.log
+
+# Environment varibales
+.env*
+!.env*.example
+
+# don't check in  env files
+**/.DS_Store
+
+# Code coverage
+coverage
+coverage/lcov-report
+coverage/coverage-final.json
+coverage/clover.xml
+
+# IDE configuration files
+.idea/
+.vscode/
+
+# Build configuration
+build/
+
+# Temp files
+tmp/
+temp/
+
+# Logs file
+logs
+logs/
+
+/.nyc_output/
+
+.eslintcache
+
