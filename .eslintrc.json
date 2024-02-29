@@ -38,9 +38,13 @@
         "error",
         "ignorePackages",
         {
-          "ts": "never",
-          "": "never"
+            "js": "never",
+            "jsx": "never",
+            "ts": "never",
+            "tsx": "never",
+            "": "never"
         }
-      ]
+      ],
+      "import/no-unresolved": "off"
   }
 }
