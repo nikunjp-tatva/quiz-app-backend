@@ -10,7 +10,7 @@
     "plugin:@typescript-eslint/recommended",
     "prettier"
   ],
-  "plugins": ["jest", "security", "prettier", "@typescript-eslint"],
+  "plugins": ["jest", "security", "prettier"],
   "parserOptions": {
     "ecmaVersion": 2022,
     "sourceType": "module"
