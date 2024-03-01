@@ -1,14 +1,15 @@
-import mongoose, { Model } from 'mongoose';
+import mongoose, { Model, Schema } from 'mongoose';
 import validator from 'validator';
 import bcrypt from 'bcryptjs';
 import { toJSON, paginate } from './plugins';
-import { roles } from '../config/roles';
+import { ROLES } from '../config/constant';
 
 interface IUser {
 	name: string;
 	email: string;
 	password: string;
 	role: string;
+	technologies: Schema.Types.ObjectId[];
 }
 
 interface UserModel extends Model<IUser> {
@@ -16,7 +17,7 @@ interface UserModel extends Model<IUser> {
 	paginate(filter: any, option: any): any;
 }
 
-const userSchema = new mongoose.Schema<IUser, UserModel>(
+const userSchema = new Schema<IUser, UserModel>(
 	{
 		name: {
 			type: String,
@@ -49,9 +50,15 @@ const userSchema = new mongoose.Schema<IUser, UserModel>(
 		},
 		role: {
 			type: String,
-			enum: roles,
-			default: 'user',
+			enum: ROLES,
+			default: ROLES.USER,
 		},
+		technologies: [
+			{
+				type: mongoose.Schema.Types.ObjectId,
+				ref: 'Technology',
+			},
+		],
 	},
 	{
 		timestamps: true,
