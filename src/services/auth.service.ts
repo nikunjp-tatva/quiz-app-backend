@@ -3,7 +3,7 @@ import tokenService from './token.service';
 import userService from './user.service';
 import Token from '../models/token.model';
 import ApiError from '../utils/ApiError';
-import { tokenTypes } from '../config/tokens';
+import { TOKEN_TYPE } from '../config/constant';
 
 /**
  * Login with username and password
@@ -27,7 +27,7 @@ export const loginUserWithEmailAndPassword = async (email, password) => {
 export const logout = async (refreshToken) => {
 	const refreshTokenDoc: any = await Token.findOne({
 		token: refreshToken,
-		type: tokenTypes.REFRESH,
+		type: TOKEN_TYPE.REFRESH,
 		blacklisted: false,
 	});
 	if (!refreshTokenDoc) {
@@ -45,7 +45,7 @@ export const refreshAuth = async (refreshToken) => {
 	try {
 		const refreshTokenDoc: any = await tokenService.verifyToken(
 			refreshToken,
-			tokenTypes.REFRESH,
+			TOKEN_TYPE.REFRESH,
 		);
 		const user = await userService.getUserById(refreshTokenDoc.user);
 		if (!user) {
@@ -68,14 +68,14 @@ export const resetPassword = async (resetPasswordToken, newPassword) => {
 	try {
 		const resetPasswordTokenDoc = await tokenService.verifyToken(
 			resetPasswordToken,
-			tokenTypes.RESET_PASSWORD,
+			TOKEN_TYPE.RESET_PASSWORD,
 		);
 		const user = await userService.getUserById(resetPasswordTokenDoc.user);
 		if (!user) {
 			throw new Error();
 		}
 		await userService.updateUserById(user.id, { password: newPassword });
-		await Token.deleteMany({ user: user.id, type: tokenTypes.RESET_PASSWORD });
+		await Token.deleteMany({ user: user.id, type: TOKEN_TYPE.RESET_PASSWORD });
 	} catch (error) {
 		throw new ApiError(httpStatus.UNAUTHORIZED, 'Password reset failed');
 	}

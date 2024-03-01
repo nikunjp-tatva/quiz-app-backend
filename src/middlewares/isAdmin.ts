@@ -4,6 +4,7 @@ import { Request, Response, NextFunction } from 'express';
 
 import ApiError from '../utils/ApiError';
 import logger from '../utils/logger';
+import { ROLES } from '../config/constant';
 
 interface RequestWithUser extends Request {
 	user: any;
@@ -26,7 +27,7 @@ const verifyCallback =
 		}
 		req.user = user;
 
-		if (req.user.role !== 'ADMIN') {
+		if (req.user.role !== ROLES.ADMIN) {
 			return reject(new ApiError(httpStatus.FORBIDDEN, 'Forbidden'));
 		}
 

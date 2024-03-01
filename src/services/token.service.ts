@@ -5,7 +5,7 @@ import config from '../config/config';
 import userService from './user.service';
 import { Token } from '../models';
 import ApiError from '../utils/ApiError';
-import { tokenTypes } from '../config/tokens';
+import { TOKEN_TYPE } from '../config/constant';
 
 /**
  * Generate token
@@ -73,12 +73,12 @@ export const verifyToken = async (token, type) => {
 export const generateAuthTokens = async (user) => {
 	let refreshTokenDoc: any = await Token.findOne({ user: user._id });
 	const accessTokenExpires = moment().add(config.jwt.accessExpirationMinutes, 'minutes');
-	const accessToken = generateToken(user.id, accessTokenExpires, tokenTypes.ACCESS);
+	const accessToken = generateToken(user.id, accessTokenExpires, TOKEN_TYPE.ACCESS);
 
 	const refreshTokenExpires = moment().add(config.jwt.refreshExpirationDays, 'days');
 	if (!refreshTokenDoc) {
-		const refreshToken = generateToken(user.id, refreshTokenExpires, tokenTypes.REFRESH);
-		await saveToken(refreshToken, user.id, refreshTokenExpires, tokenTypes.REFRESH);
+		const refreshToken = generateToken(user.id, refreshTokenExpires, TOKEN_TYPE.REFRESH);
+		await saveToken(refreshToken, user.id, refreshTokenExpires, TOKEN_TYPE.REFRESH);
 
 		refreshTokenDoc = {};
 		refreshTokenDoc.token = refreshToken;
@@ -107,8 +107,8 @@ export const generateResetPasswordToken = async (email) => {
 		throw new ApiError(httpStatus.NOT_FOUND, 'No users found with this email');
 	}
 	const expires = moment().add(config.jwt.resetPasswordExpirationMinutes, 'minutes');
-	const resetPasswordToken = generateToken(user.id, expires, tokenTypes.RESET_PASSWORD);
-	await saveToken(resetPasswordToken, user.id, expires, tokenTypes.RESET_PASSWORD);
+	const resetPasswordToken = generateToken(user.id, expires, TOKEN_TYPE.RESET_PASSWORD);
+	await saveToken(resetPasswordToken, user.id, expires, TOKEN_TYPE.RESET_PASSWORD);
 	return resetPasswordToken;
 };
 
