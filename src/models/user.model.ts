@@ -9,7 +9,6 @@ interface IUser {
 	email: string;
 	password: string;
 	role: string;
-	isEmailVerified: boolean;
 }
 
 interface UserModel extends Model<IUser> {
@@ -52,10 +51,6 @@ const userSchema = new mongoose.Schema<IUser, UserModel>(
 			type: String,
 			enum: roles,
 			default: 'user',
-		},
-		isEmailVerified: {
-			type: Boolean,
-			default: false,
 		},
 	},
 	{
