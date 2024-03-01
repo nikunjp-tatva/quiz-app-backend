@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs';
 import { toJSON, paginate } from './plugins';
 import { ROLES } from '../config/constant';
 
-interface IUser {
+export interface IUser extends mongoose.Document {
 	name: string;
 	email: string;
 	password: string;
