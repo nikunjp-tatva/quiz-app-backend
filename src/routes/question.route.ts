@@ -15,7 +15,7 @@ router
 
 router
 	.route('/:questionId')
-	.get(auth, validate(questionValidation.getQuestion), questionController.getQuestion)
+	.get(auth, isAdmin, validate(questionValidation.getQuestion), questionController.getQuestion)
 	.patch(
 		auth,
 		isAdmin,
