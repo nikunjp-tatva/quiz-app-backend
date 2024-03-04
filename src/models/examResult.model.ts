@@ -2,7 +2,7 @@ import mongoose, { Model, Schema } from 'mongoose';
 import { EXAM_STATUS } from '../config/constant';
 import { toJSON, paginate } from './plugins';
 
-interface IExamResult {
+interface IExamResult extends mongoose.Document {
 	user: Schema.Types.ObjectId;
 	technology: Schema.Types.ObjectId;
 	dateAppeared: Date;

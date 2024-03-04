@@ -1,14 +1,10 @@
 import mongoose, { Model } from 'mongoose';
 import { toJSON, paginate } from './plugins';
 
-interface IGlobalSetting {
-	name: string;
-	description: string;
-	logo: string;
+interface IGlobalSetting extends mongoose.Document {
 	noOfQuestion: number;
 	duration: number;
 	cutOff: number;
-	global: boolean;
 }
 
 interface GlobalSettingModel extends Model<IGlobalSetting> {
