@@ -1,5 +1,5 @@
-import mongoose, { Model } from 'mongoose';
-import { toJSON, paginate } from './plugins';
+import mongoose from 'mongoose';
+import { toJSON } from './plugins';
 
 interface IGlobalSetting extends mongoose.Document {
 	noOfQuestion: number;
@@ -7,11 +7,7 @@ interface IGlobalSetting extends mongoose.Document {
 	cutOff: number;
 }
 
-interface GlobalSettingModel extends Model<IGlobalSetting> {
-	paginate(filter: any, option: any): any;
-}
-
-const globalSettingSchema = new mongoose.Schema<IGlobalSetting, GlobalSettingModel>(
+const globalSettingSchema = new mongoose.Schema<IGlobalSetting>(
 	{
 		noOfQuestion: {
 			type: Number,
@@ -36,14 +32,10 @@ const globalSettingSchema = new mongoose.Schema<IGlobalSetting, GlobalSettingMod
 
 // add plugin that converts mongoose to json
 globalSettingSchema.plugin(toJSON);
-globalSettingSchema.plugin(paginate);
 
 /**
  * @typedef GlobalSetting
  */
-export const GlobalSetting = mongoose.model<IGlobalSetting, GlobalSettingModel>(
-	'GlobalSetting',
-	globalSettingSchema,
-);
+export const GlobalSetting = mongoose.model<IGlobalSetting>('Global-Setting', globalSettingSchema);
 
 export default GlobalSetting;
