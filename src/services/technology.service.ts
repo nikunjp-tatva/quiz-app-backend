@@ -34,13 +34,6 @@ export const queryTechnology = async (filter, options) => Technology.paginate(fi
 export const getTechnologyById = async (id) => Technology.findById(id);
 
 /**
- * Get technology by name
- * @param {string} name
- * @returns {Promise<Technology>}
- */
-export const getTechnologyByName = async (name) => Technology.findOne({ name });
-
-/**
  * Update technology by id
  * @param {ObjectId} technologyId
  * @param {Object} updateBody
@@ -77,7 +70,6 @@ export default {
 	addTechnology,
 	queryTechnology,
 	getTechnologyById,
-	getTechnologyByName,
 	updateTechnologyById,
 	deleteTechnologyById,
 };
