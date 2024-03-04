@@ -2,6 +2,7 @@ import express from 'express';
 
 import adminRoute from './admin.route';
 import authRoute from './auth.route';
+import technologyRoute from './technology.route';
 import userRoute from './user.route';
 
 const router = express.Router();
@@ -14,6 +15,10 @@ const defaultRoutes = [
 	{
 		path: '/auth',
 		route: authRoute,
+	},
+	{
+		path: '/technologies',
+		route: technologyRoute,
 	},
 	{
 		path: '/users',
