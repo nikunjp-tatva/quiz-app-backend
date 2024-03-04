@@ -2,7 +2,7 @@ import mongoose, { Model, ObjectId } from 'mongoose';
 
 import { toJSON, paginate } from './plugins';
 
-interface ITechnology extends mongoose.Document {
+export interface ITechnology extends mongoose.Document {
 	name: string;
 	description: string;
 	logoUrl: string;
@@ -14,7 +14,7 @@ interface ITechnology extends mongoose.Document {
 
 interface TechnologyModel extends Model<ITechnology> {
 	paginate(filter: 'name', option: 'sortBy' | 'limit' | 'page'): any;
-	isNameExists(name: string, userId?: string): boolean;
+	isNameExists(name: string, excludeTechnologyId?: string): boolean;
 }
 
 const technologySchema = new mongoose.Schema<ITechnology, TechnologyModel>(
@@ -72,9 +72,9 @@ technologySchema.plugin(paginate);
  */
 technologySchema.statics.isNameExists = async function (
 	name: string,
-	excludeUserId: ObjectId,
+	excludeTechnologyId: ObjectId,
 ): Promise<boolean> {
-	const technology = await this.findOne({ name, _id: { $ne: excludeUserId } });
+	const technology = await this.findOne({ name, _id: { $ne: excludeTechnologyId } });
 	return !!technology;
 };
 
