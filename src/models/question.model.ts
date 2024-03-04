@@ -2,21 +2,27 @@ import mongoose, { Model, Schema, ObjectId, Document, PopulatedDoc } from 'mongo
 import { toJSON, paginate } from './plugins';
 import { ITechnology } from './technology.model';
 
-interface IQuestion extends mongoose.Document {
+interface IQuestion {
 	technology: PopulatedDoc<Document<ITechnology> & ITechnology>;
 	questionText: string;
 	description: string;
 	options: string[];
 	correctOption: string;
 	isDeleted: boolean;
+    deletedAt: Date | null;
 }
 
-interface QuestionModel extends Model<IQuestion> {
+interface IQuestionDocument extends IQuestion, Document {
+    softDelete: (this: IQuestionDocument) => Promise<Document>; 
+    restore: (this: IQuestionDocument) => Promise<Document>; 
+}
+
+interface IQuestionModel extends Model<IQuestionDocument> {
 	paginate(filter: ['questionText', 'technology'], option: ['sortBy', 'limit', 'page']): any;
 	isQuestionExists(questionData, questionId?: string): boolean;
 }
 
-const questionSchema = new Schema<IQuestion, QuestionModel>(
+const questionSchema = new Schema(
 	{
 		technology: {
 			type: Schema.Types.ObjectId,
@@ -45,6 +51,10 @@ const questionSchema = new Schema<IQuestion, QuestionModel>(
 			type: Boolean,
 			default: false,
 		},
+        deletedAt: {
+            type: Date,
+            default: null,
+        },
 	},
 	{
 		timestamps: true,
@@ -53,7 +63,23 @@ const questionSchema = new Schema<IQuestion, QuestionModel>(
 
 // add plugin that converts mongoose to json
 questionSchema.plugin(toJSON);
+
+// pagination plugin
 questionSchema.plugin(paginate);
+
+// Soft delete method
+questionSchema.methods.softDelete = async function(this: IQuestionDocument) {
+    this.isDeleted = true;
+    this.deletedAt = new Date();
+    return this.save();
+};
+
+// Restore method
+questionSchema.methods.restore = async function(this: IQuestionDocument) {
+    this.isDeleted = false;
+    this.deletedAt = null;
+    return this.save();
+};
 
 /**
  * Check if question is exists
@@ -85,7 +111,7 @@ questionSchema.statics.isQuestionExists = async function (
 			question?.options?.length === questionData?.options?.length &&
 			question?.options.every((element, index) => element === questionData?.options[index]);
 		return isSame;
-	}
+	}   
 
 	return !!question;
 };
@@ -93,6 +119,6 @@ questionSchema.statics.isQuestionExists = async function (
 /**
  * @typedef Question
  */
-export const Question = mongoose.model<IQuestion, QuestionModel>('Question', questionSchema);
+export const Question = mongoose.model<IQuestion, IQuestionModel>('Question', questionSchema);
 
 export default Question;

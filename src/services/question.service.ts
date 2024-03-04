@@ -10,7 +10,7 @@ import ApiError from '../utils/ApiError';
  */
 export const addQuestion = async (questionBody) => {
 	if (await Question.isQuestionExists(questionBody)) {
-		throw new ApiError(httpStatus.BAD_REQUEST, 'Question already exists');
+		throw new ApiError(httpStatus.BAD_REQUEST, 'Question already exists or soft deleted');
 	}
 	return Question.create(questionBody);
 };
@@ -31,7 +31,8 @@ export const queryQuestion = async (filter, options) => Question.paginate(filter
  * @param {ObjectId} id
  * @returns {Promise<Question>}
  */
-export const getQuestionById = async (id) => Question.findById(id).populate('technology');
+export const getQuestionById = async (id) =>
+	Question.findOne({ _id: id, isDeleted: false }).populate('technology');
 
 /**
  * Update question by id
@@ -48,7 +49,7 @@ export const updateQuestionById = async (questionId: string, updateBody: object)
 		updateBody &&
 		(await Question.isQuestionExists({ ...question, ...updateBody }, questionId))
 	) {
-		throw new ApiError(httpStatus.BAD_REQUEST, 'Question already exists');
+		throw new ApiError(httpStatus.BAD_REQUEST, 'Question already exists or soft deleted');
 	}
 	Object.assign(question, updateBody);
 	await question.save();
@@ -56,16 +57,17 @@ export const updateQuestionById = async (questionId: string, updateBody: object)
 };
 
 /**
- * Delete question by id
+ * Soft delete question by id
  * @param {ObjectId} questionId
  * @returns {Promise<Question>}
  */
-export const deleteQuestionById = async (questionId) => {
+export const softDeleteQuestionById = async (questionId) => {
 	const question = await getQuestionById(questionId);
 	if (!question) {
 		throw new ApiError(httpStatus.NOT_FOUND, 'Question not found');
 	}
-	await question.deleteOne();
+	// Set the deletedAt field to the current date and time
+	await question.softDelete();
 	return question;
 };
 
@@ -74,5 +76,5 @@ export default {
 	queryQuestion,
 	getQuestionById,
 	updateQuestionById,
-	deleteQuestionById,
+	softDeleteQuestionById,
 };

@@ -15,6 +15,7 @@ const getQuestions = catchAsync(async (req: Request, res: Response) => {
 	const filter = pick(req.query, ['questionText', 'technology']);
 	const options = pick(req.query, ['sortBy', 'limit', 'page']);
 	options.populate = 'technology';
+	filter.isDeleted = false;
 	const result = await questionService.queryQuestion(filter, options);
 	res.send(result);
 });
@@ -33,7 +34,7 @@ const updateQuestion = catchAsync(async (req: Request, res: Response) => {
 });
 
 const deleteQuestion = catchAsync(async (req: Request, res: Response) => {
-	await questionService.deleteQuestionById(req.params.questionId);
+	await questionService.softDeleteQuestionById(req.params.questionId);
 	res.status(httpStatus.NO_CONTENT).send();
 });
 
