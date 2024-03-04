@@ -34,8 +34,22 @@ const updateQuestion = catchAsync(async (req: Request, res: Response) => {
 });
 
 const deleteQuestion = catchAsync(async (req: Request, res: Response) => {
+	await questionService.deleteQuestionById(req.params.questionId);
+	res.status(httpStatus.NO_CONTENT).send();
+});
+
+const softDeleteQuestion = catchAsync(async (req: Request, res: Response) => {
 	await questionService.softDeleteQuestionById(req.params.questionId);
 	res.status(httpStatus.NO_CONTENT).send();
+});
+
+const deletedQuestions = catchAsync(async (req: Request, res: Response) => {
+	const filter = pick(req.query, ['questionText', 'technology']);
+	const options = pick(req.query, ['sortBy', 'limit', 'page']);
+	options.populate = 'technology';
+	filter.isDeleted = true;
+	const result = await questionService.queryQuestion(filter, options);
+	res.send(result);
 });
 
 export default {
@@ -44,4 +58,6 @@ export default {
 	getQuestion,
 	updateQuestion,
 	deleteQuestion,
+	deletedQuestions,
+	softDeleteQuestion,
 };

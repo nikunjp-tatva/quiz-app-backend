@@ -9,12 +9,12 @@ interface IQuestion {
 	options: string[];
 	correctOption: string;
 	isDeleted: boolean;
-    deletedAt: Date | null;
+	deletedAt: Date | null;
 }
 
 interface IQuestionDocument extends IQuestion, Document {
-    softDelete: (this: IQuestionDocument) => Promise<Document>; 
-    restore: (this: IQuestionDocument) => Promise<Document>; 
+	softDelete: (this: IQuestionDocument) => Promise<Document>;
+	restore: (this: IQuestionDocument) => Promise<Document>;
 }
 
 interface IQuestionModel extends Model<IQuestionDocument> {
@@ -51,10 +51,10 @@ const questionSchema = new Schema(
 			type: Boolean,
 			default: false,
 		},
-        deletedAt: {
-            type: Date,
-            default: null,
-        },
+		deletedAt: {
+			type: Date,
+			default: null,
+		},
 	},
 	{
 		timestamps: true,
@@ -68,17 +68,17 @@ questionSchema.plugin(toJSON);
 questionSchema.plugin(paginate);
 
 // Soft delete method
-questionSchema.methods.softDelete = async function(this: IQuestionDocument) {
-    this.isDeleted = true;
-    this.deletedAt = new Date();
-    return this.save();
+questionSchema.methods.softDelete = async function (this: IQuestionDocument) {
+	this.isDeleted = true;
+	this.deletedAt = new Date();
+	return this.save();
 };
 
 // Restore method
-questionSchema.methods.restore = async function(this: IQuestionDocument) {
-    this.isDeleted = false;
-    this.deletedAt = null;
-    return this.save();
+questionSchema.methods.restore = async function (this: IQuestionDocument) {
+	this.isDeleted = false;
+	this.deletedAt = null;
+	return this.save();
 };
 
 /**
@@ -111,7 +111,7 @@ questionSchema.statics.isQuestionExists = async function (
 			question?.options?.length === questionData?.options?.length &&
 			question?.options.every((element, index) => element === questionData?.options[index]);
 		return isSame;
-	}   
+	}
 
 	return !!question;
 };

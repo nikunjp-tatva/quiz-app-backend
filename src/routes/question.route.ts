@@ -13,6 +13,17 @@ router
 	.post(auth, isAdmin, validate(questionValidation.addQuestion), questionController.addQuestion)
 	.get(auth, isAdmin, validate(questionValidation.getQuestions), questionController.getQuestions);
 
+router.route('/softDeleted').get(auth, isAdmin, questionController.deletedQuestions);
+
+router
+	.route('/soft/:questionId')
+	.delete(
+		auth,
+		isAdmin,
+		validate(questionValidation.deleteQuestion),
+		questionController.softDeleteQuestion,
+	);
+
 router
 	.route('/:questionId')
 	.get(auth, isAdmin, validate(questionValidation.getQuestion), questionController.getQuestion)

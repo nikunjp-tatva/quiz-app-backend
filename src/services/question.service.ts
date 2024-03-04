@@ -71,10 +71,25 @@ export const softDeleteQuestionById = async (questionId) => {
 	return question;
 };
 
+/**
+ * Delete question by id
+ * @param {ObjectId} questionId
+ * @returns {Promise<Question>}
+ */
+export const deleteQuestionById = async (questionId) => {
+	const question = await getQuestionById(questionId);
+	if (!question) {
+		throw new ApiError(httpStatus.NOT_FOUND, 'Question not found');
+	}
+	await question.deleteOne();
+	return question;
+};
+
 export default {
 	addQuestion,
 	queryQuestion,
 	getQuestionById,
 	updateQuestionById,
 	softDeleteQuestionById,
+	deleteQuestionById,
 };
