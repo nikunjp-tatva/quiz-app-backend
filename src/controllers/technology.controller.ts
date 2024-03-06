@@ -4,7 +4,7 @@ import { Request, Response } from 'express';
 import pick from '../utils/pick';
 import ApiError from '../utils/ApiError';
 import catchAsync from '../utils/catchAsync';
-import { questionService, technologyService } from '../services';
+import { technologyService } from '../services';
 
 const addTechnology = catchAsync(async (req: Request, res: Response) => {
 	const technology = await technologyService.addTechnology(req.body);
@@ -39,20 +39,10 @@ const deleteTechnology = catchAsync(async (req: Request, res: Response) => {
 	res.status(httpStatus.NO_CONTENT).send();
 });
 
-const getTechnologyDetails = catchAsync(async (req: Request, res: Response) => {
-	const technology = await technologyService.getTechnologyById(req.params.technologyId);
-	if (!technology) {
-		throw new ApiError(httpStatus.NOT_FOUND, 'Technology not found');
-	}
-	const questions = await questionService.getQuestionsByTechnologyId(technology.id);
-	res.send({ technology, questions });
-});
-
 export default {
 	addTechnology,
 	getTechnologies,
 	getTechnology,
 	updateTechnology,
 	deleteTechnology,
-	getTechnologyDetails,
 };
