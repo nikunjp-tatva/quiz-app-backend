@@ -28,15 +28,15 @@ export const queryQuestion = async (filter, options) => Question.paginate(filter
 
 /**
  * Get question by id
- * @param {ObjectId} id
+ * @param {string} id
  * @returns {Promise<Question>}
  */
-export const getQuestionById = async (id) =>
+export const getQuestionById = async (id: string) =>
 	Question.findOne({ _id: id, isDeleted: false }).populate('technology');
 
 /**
  * Update question by id
- * @param {ObjectId} questionId
+ * @param {string} questionId
  * @param {Object} updateBody
  * @returns {Promise<Question>}
  */
@@ -73,17 +73,26 @@ export const softDeleteQuestionById = async (questionId) => {
 
 /**
  * Delete question by id
- * @param {ObjectId} questionId
+ * @param {string} questionId
  * @returns {Promise<Question>}
  */
-export const deleteQuestionById = async (questionId) => {
-	const question = await getQuestionById(questionId);
+export const deleteQuestionById = async (questionId: string) => {
+	const question = await Question.findById(questionId);
 	if (!question) {
 		throw new ApiError(httpStatus.NOT_FOUND, 'Question not found');
 	}
 	await question.deleteOne();
 	return question;
 };
+
+/**
+ * Returns all questions of one technology
+ * @param {string} technologyId
+ */
+export const getQuestionsByTechnologyId = async (technologyId: string) =>
+	Question.find({ technology: technologyId }).select(
+		'-technology -correctOption -isDeleted -deletedAt',
+	);
 
 export default {
 	addQuestion,
@@ -92,4 +101,5 @@ export default {
 	updateQuestionById,
 	softDeleteQuestionById,
 	deleteQuestionById,
+	getQuestionsByTechnologyId,
 };

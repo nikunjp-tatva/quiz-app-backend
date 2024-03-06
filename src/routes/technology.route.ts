@@ -5,6 +5,7 @@ import auth from '../middlewares/auth';
 import isAdmin from '../middlewares/isAdmin';
 import technologyValidation from '../validations/technology.validation';
 import technologyController from '../controllers/technology.controller';
+import hasExamAccess from '../middlewares/hasExamAccess';
 
 const router = express.Router();
 
@@ -39,4 +40,12 @@ router
 		technologyController.deleteTechnology,
 	);
 
+router
+	.route('/:technologyId/details')
+	.get(
+		auth,
+		hasExamAccess,
+		validate(technologyValidation.getTechnology),
+		technologyController.getTechnologyDetails,
+	);
 export default router;
