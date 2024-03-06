@@ -19,7 +19,13 @@ export const addGlobalSettings = async (configBody) => {
  * Get global setting data
  * @returns {Promise<GlobalSetting>}
  */
-export const getGlobalSettings = async () => GlobalSetting.findOne();
+export const getGlobalSettings = async () => {
+	const setting = await GlobalSetting.findOne();
+	if (!setting) {
+		throw new ApiError(httpStatus.NOT_FOUND, 'Global settings not found');
+	}
+	return setting;
+};
 
 /**
  * Update global setting data

@@ -9,7 +9,8 @@ interface IExamResult extends mongoose.Document {
 	status: Array<keyof typeof EXAM_STATUS> | null;
 	score: number;
 	responses: object[];
-	skippedQuestions: Schema.Types.ObjectId[];
+	duration: number;
+	completeTime: number;
 }
 
 interface ExamResultModel extends Model<IExamResult> {
@@ -37,19 +38,24 @@ const examResultSchema = new Schema<IExamResult, ExamResultModel>(
 				},
 				selectedOption: {
 					type: String,
+					default: null,
 				},
 				isCorrect: {
 					type: Boolean,
 					default: false,
 				},
+				isSkipped: {
+					type: Boolean,
+					default: true,
+				},
 			},
 		],
-		skippedQuestions: [
-			{
-				type: mongoose.Schema.Types.ObjectId,
-				ref: 'Question',
-			},
-		],
+		duration: {
+			type: mongoose.Schema.Types.Number,
+		},
+		completeTime: {
+			type: mongoose.Schema.Types.Number,
+		},
 		score: {
 			type: Number,
 			default: 0,

@@ -10,7 +10,6 @@ export const addTechnology = {
 		noOfQuestion: Joi.number().integer(),
 		duration: Joi.number().integer(),
 		cutOff: Joi.number().integer(),
-		useGlobalSetting: Joi.boolean(),
 	}),
 };
 
@@ -38,10 +37,9 @@ export const updateTechnology = {
 			name: Joi.string(),
 			logoUrl: Joi.string(),
 			description: Joi.string(),
-			noOfQuestion: Joi.number().integer(),
-			duration: Joi.number().integer(),
-			cutOff: Joi.number().integer(),
-			useGlobalSetting: Joi.boolean(),
+			noOfQuestion: Joi.optional(),
+			duration: Joi.optional(),
+			cutOff: Joi.optional(),
 		})
 		.min(1),
 };

@@ -2,14 +2,15 @@ import mongoose, { Model, ObjectId } from 'mongoose';
 
 import { toJSON, paginate } from './plugins';
 
+type numberSettingType = number | undefined | null;
+
 export interface ITechnology extends mongoose.Document {
 	name: string;
 	description: string;
 	logoUrl: string;
-	noOfQuestion: number;
-	duration: number;
-	cutOff: number;
-	useGlobalSetting: boolean;
+	noOfQuestion: numberSettingType;
+	duration: numberSettingType;
+	cutOff: numberSettingType;
 }
 
 interface TechnologyModel extends Model<ITechnology> {
@@ -49,10 +50,6 @@ const technologySchema = new mongoose.Schema<ITechnology, TechnologyModel>(
 			type: Number,
 			trim: true,
 			default: null,
-		},
-		useGlobalSetting: {
-			type: Boolean,
-			default: false,
 		},
 	},
 	{

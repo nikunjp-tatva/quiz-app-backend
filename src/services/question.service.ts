@@ -86,13 +86,20 @@ export const deleteQuestionById = async (questionId: string) => {
 };
 
 /**
- * Returns all questions of one technology
+ * Returns all questions of one technology without correct option
  * @param {string} technologyId
  */
 export const getQuestionsByTechnologyId = async (technologyId: string) =>
 	Question.find({ technology: technologyId }).select(
 		'-technology -correctOption -isDeleted -deletedAt',
 	);
+
+/**
+ * Returns all questions of one technology
+ * @param {string} technologyId
+ */
+export const getQuestionsByTechnologyIdWithAnswers = async (technologyId: string) =>
+	Question.find({ technology: technologyId }).select('-technology -isDeleted -deletedAt');
 
 export default {
 	addQuestion,
@@ -102,4 +109,5 @@ export default {
 	softDeleteQuestionById,
 	deleteQuestionById,
 	getQuestionsByTechnologyId,
+	getQuestionsByTechnologyIdWithAnswers,
 };

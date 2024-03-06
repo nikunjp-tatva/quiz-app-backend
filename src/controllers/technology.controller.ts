@@ -4,9 +4,14 @@ import { Request, Response } from 'express';
 import pick from '../utils/pick';
 import ApiError from '../utils/ApiError';
 import catchAsync from '../utils/catchAsync';
-import { technologyService } from '../services';
+import { globalSettings, technologyService } from '../services';
 
 const addTechnology = catchAsync(async (req: Request, res: Response) => {
+	const globalSetting = await globalSettings.getGlobalSettings();
+
+	if (!globalSetting) {
+		throw new ApiError(httpStatus.BAD_REQUEST, 'Please Enter Global Settings first');
+	}
 	const technology = await technologyService.addTechnology(req.body);
 	res.status(httpStatus.CREATED).send(technology);
 });
