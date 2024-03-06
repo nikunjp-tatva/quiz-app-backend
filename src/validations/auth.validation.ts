@@ -1,11 +1,12 @@
 import Joi from 'joi';
-import { password } from './custom.validation';
+import { objectId, password } from './custom.validation';
 
 export const register = {
 	body: Joi.object().keys({
 		email: Joi.string().required().email(),
 		password: Joi.string().required().custom(password),
 		name: Joi.string().required(),
+		technologies: Joi.array().items(Joi.string().custom(objectId)).min(1),
 	}),
 };
 

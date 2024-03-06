@@ -8,12 +8,14 @@ export const createUser = {
 		password: Joi.string().required().custom(password),
 		name: Joi.string().required(),
 		role: Joi.string().valid(...Object.values(ROLES)),
+		technologies: Joi.array().items(Joi.string().custom(objectId)).min(1),
 	}),
 };
 
 export const getUsers = {
 	query: Joi.object().keys({
 		name: Joi.string(),
+		technologies: Joi.string(),
 		sortBy: Joi.string(),
 		limit: Joi.number().integer(),
 		page: Joi.number().integer(),
@@ -35,7 +37,7 @@ export const updateUser = {
 			email: Joi.string().email(),
 			password: Joi.string().custom(password),
 			name: Joi.string(),
-			technologies: Joi.string().custom(objectId),
+			technologies: Joi.array().items(Joi.string().custom(objectId)).min(1),
 			role: Joi.string().valid(...Object.values(ROLES)),
 		})
 		.min(1),
@@ -47,7 +49,7 @@ export const updateAdminUserMe = {
 			email: Joi.string().email(),
 			password: Joi.string().custom(password),
 			name: Joi.string(),
-			technologies: Joi.string().custom(objectId),
+			technologies: Joi.array().items(Joi.string().custom(objectId)).min(1),
 			role: Joi.string().valid(...Object.values(ROLES)),
 		})
 		.min(1),
