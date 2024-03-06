@@ -2,6 +2,7 @@ import express from 'express';
 
 import adminRoute from './admin.route';
 import authRoute from './auth.route';
+import examRoute from './exam.route';
 import globalSettingRoute from './globalSetting.route';
 import questionRoute from './question.route';
 import technologyRoute from './technology.route';
@@ -17,6 +18,10 @@ const defaultRoutes = [
 	{
 		path: '/auth',
 		route: authRoute,
+	},
+	{
+		path: '/exams',
+		route: examRoute,
 	},
 	{
 		path: '/globalSettings',
