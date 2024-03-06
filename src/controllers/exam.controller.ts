@@ -8,6 +8,7 @@ import { questionService, technologyService, examService, globalSettings } from 
 import { IUser } from '../models';
 import { EXAM_STATUS } from '../config/constant';
 import pick from '../utils/pick';
+import getRandomSubsetOfArray from '../utils/util';
 
 const getExamDetails = catchAsync(async (req: Request, res: Response) => {
 	const technology = await technologyService.getTechnologyById(req.params.technologyId);
@@ -23,7 +24,8 @@ const getExamDetails = catchAsync(async (req: Request, res: Response) => {
 		? technology?.noOfQuestion
 		: globalSetting?.noOfQuestion;
 
-	res.send({ technology, questions });
+	const randomShuffledQuestions = getRandomSubsetOfArray(questions, technology.noOfQuestion);
+	res.send({ technology, questions: randomShuffledQuestions });
 });
 
 const examResult = catchAsync(async (req: Request, res: Response) => {
