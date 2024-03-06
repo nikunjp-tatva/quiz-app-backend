@@ -49,7 +49,7 @@ export const refreshAuth = async (refreshToken) => {
 		);
 		const user = await userService.getUserById(refreshTokenDoc.user);
 		if (!user) {
-			throw new Error();
+			throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect refreshToken');
 		}
 		await refreshTokenDoc.deleteOne();
 		return tokenService.generateAuthTokens(user);
@@ -72,7 +72,7 @@ export const resetPassword = async (resetPasswordToken, newPassword) => {
 		);
 		const user = await userService.getUserById(resetPasswordTokenDoc.user);
 		if (!user) {
-			throw new Error();
+			throw new ApiError(httpStatus.UNAUTHORIZED, 'Invalid token');
 		}
 		await userService.updateUserById(user.id, { password: newPassword });
 		await Token.deleteMany({ user: user.id, type: TOKEN_TYPE.RESET_PASSWORD });
